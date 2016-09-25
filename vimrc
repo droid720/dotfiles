@@ -1,5 +1,5 @@
-"set nocompatible
-filetype plugin on
+set nocompatible
+set encoding=utf8
 function! LoadVundle()
     let vundle_installed=filereadable(expand('~/.vim/bundle/vundle/README.md'))
     if vundle_installed == 0
@@ -13,33 +13,27 @@ function! LoadVundle()
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
     " Bundle definitions
-    Plugin 'tpope/vim-fugitive'
     Plugin 'majutsushi/tagbar'
     Plugin 'tomtom/tcomment_vim'
     Plugin 'scrooloose/nerdtree'
-    Plugin 'kien/ctrlp.vim'
-    Plugin 'chriskempson/vim-tomorrow-theme'
+    Plugin 'ctrlpvim/ctrlp.vim'
     Plugin 'Raimondi/delimitMate'
     Plugin 'mattn/emmet-vim'
-    Plugin 'scrooloose/syntastic'
     Plugin 'fatih/vim-go'
     Plugin 'airblade/vim-gitgutter'
-    Plugin 'easymotion/vim-easymotion'
     Plugin 'vim-airline/vim-airline'
-    Plugin 'plasticboy/vim-markdown'
-    Plugin 'ervandew/supertab'
+    Plugin 'elzr/vim-json'
+    Plugin 'zhaocai/GoldenView.Vim'
+    Plugin 'vim-airline/vim-airline-themes'
+    Plugin 'chemzqm/vim-jsx-improve'
+    Plugin 'rking/ag.vim'
+    Plugin 'Shougo/neocomplete.vim'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'tomasr/molokai'
+    Plugin 'Valloric/MatchTagAlways'
+    Plugin 'w0rp/ale'
     Plugin 'ryanoasis/vim-devicons'
-    Plugin 'dracula/vim'
-    Plugin 'Shougo/deoplete.nvim'
-		Plugin 'Valloric/MatchTagAlways'
-		Plugin 'fatih/molokai'
-
-    Plugin 'mxw/vim-jsx'
-    Plugin 'jelera/vim-javascript-syntax'
-    Plugin 'vim-scripts/JavaScript-Indent'
-    Plugin 'w0ng/vim-hybrid'
-    Plugin 'othree/javascript-libraries-syntax.vim'
-
+    Plugin 'ervandew/supertab'
 
     if vundle_installed==0
         echo vundle_installed
@@ -51,49 +45,34 @@ function! LoadVundle()
     filetype plugin indent on
 endfunction
 call LoadVundle()
+filetype plugin indent on
 set number
 set relativenumber
 set cursorline
-hi cursorlinenr ctermfg=white cterm=bold
-set nuw=5
-set ruler
+""""""""" set cursorcolumn
 set hidden
-syntax on
 set nowrap
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set linespace=2
 set scrolloff=5
 set clipboard=unnamed
 set expandtab
 set list listchars=tab:\ \ ,trail:·
-"set list listchars=tab:»-,trail:·,extends:»,precedes:«
+" set list listchars=tab:»-,trail:·,extends:»,precedes:«
 set syntax=whitespace
 set autoindent
 set smartindent
 set virtualedit=block
-set splitbelow
+set backspace=indent,eol,start
 " Searching
 set hlsearch
 set incsearch
 set ignorecase
-set smartcase
-" Show (partial) command in the status line
-"set showcmd
-" Use modeline overrides
-set modeline
-set modelines=10
-" Insert only one space when joining lines with terminating punctuation
 set nojoinspaces
-" Automatically reload files changed outside of vim
 set autoread
-" Display incomplete commands
 set showcmd
-" Keep more context when scrolling off the end of a buffer
-set scrolloff=3
-" Scroll optimizations
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! RemoveFancyCharacters()
     let typo = {}
     let typo["“"] = '"'
@@ -106,46 +85,32 @@ function! RemoveFancyCharacters()
     :exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
 endfunction
 command! RemoveFancyCharacters :call RemoveFancyCharacters()
-set background=dark
 set backupdir=~/.vim/backups
-set directory=~/.vim/backups
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$\|^env$|^venv$|bower_components$\|dist$\|^node_modules$\|project_files$\|test$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
 
-" Tab completion
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,.svn,vendor/gems/*
-" load the plugin and indent settings for the detected filetype
-filetype plugin indent on
-" Status bar
-set laststatus=2
-
-" Ctrlp cleanup
-let g:ctrlp_custom_ignore= '\v[\/](\.git|\node_modules|\.hg|\.svn|\.settings|\.sass-cache|cache|\.rsync_cache|vendor/([^\/]+\/)*vendor)$'
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/vendor,*/node_modules/*,*.DS_Store
-map <Leader>tf :call ToggleFolding()<CR>
-"""""""""""""""""""""""
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/env/*,*/venv/*,*/node_modules/*,*.DS_Store,*.pyc,*.pyo,*__pycache__
 let NERDTreeShowHidden=1
 let NERDTreeIgnore=['\.git$', '\~$', '\.DS_Store']
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 autocmd BufRead,BufNewFile $HOME let NERDTreeShowHidden=0
 
-imap jj <Esc>
-imap <c-h>:hide <CR>
-map <c-b> <Esc>:w <CR>:!clear <CR> :GoRun <CR>
+map <c-b> <Esc>:w <CR> :GoRun <CR>
 map <c-n> :NERDTreeToggle<CR>
-map <c-f> :CtrlP<CR>
 map <c-f> :CtrlP<CR>
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 noremap <C-h> <C-W>h
 map <C-l> <C-W>l
 map <c-m> :TagbarToggle<CR>
-""" TAB""""
 nnoremap <Tab> :bnext<CR>
-imap <c-s> <Esc>:wa<CR>
-map <c-s> :wa <CR>
+imap <c-s> <Esc>:w<CR>
+map <c-s> <Esc>:w<CR>
 
 let g:user_emmet_install_global = 1
 let g:user_emmet_leader_key=','
-let mapleader = ";"
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
@@ -154,69 +119,50 @@ let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 1
 let g:go_fmt_command = "goimports"
+set rtp+=$GOPATH/src/github.com/nsf/gocode/vim
 set nobackup
 set nowritebackup
 set noswapfile
-let g:go_def_mode = 'godef'
-"let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
-let g:syntastic_go_checkers = ['go', 'errcheck']
 let g:jsx_ext_required = 0
-"""""""""""""""""""""""""""""""""
-"""" CTAGS """"""""""""""
 set tags=tags,.tags
-
-function! DelTagOfFile(file)
-  let fullpath = a:file
-  let cwd = getcwd()
-  let tagfilename = cwd . "/tags"
-  let f = substitute(fullpath, cwd . "/", "", "")
-  let f = escape(f, './')
-  let cmd = 'sed -i "/' . f . '/d" "' . tagfilename . '"'
-  let resp = system(cmd)
-endfunction
-
-function! UpdateTags()
-  let f = expand("%:p")
-  let cwd = getcwd()
-  let tagfilename = cwd . "/tags"
-  let cmd = 'ctags -a -f ' . tagfilename . ' --c++-kinds=+p --fields=+iaS --extra=+q ' . '"' . f . '"'
-  call DelTagOfFile(f)
-  let resp = system(cmd)
-endfunction
-autocmd BufWritePost *.cpp,*.h,*.c,*.go,*.php call UpdateTags()
-let g:airline_powerline_fonts=1
-
-set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline\ Nerd\ Font\ Complete:h13
-"color molokai
-"let g:rehash256 = 1
 syntax enable
-set background=dark
-colorscheme hybrid
-let g:airline_theme='dracula'
-set completeopt-=preview
-set wildmenu
-set wildmode=longest:full,list:full
-
+set mouse=
 command WQ wq
 command Wq wq
 command W w
-command Q q
-
-" neovim ctrl+h
-if has('nvim')
-  nmap <BS> <C-W>h
-endif
-"neocomplete
-set runtimepath+=~/.config/nvim/bundle/deoplete.nvim
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-"let g:deoplete#omni_patterns.javascript = '[^. \t]\.\%(\h\w*\)\?'
-let g:deoplete#omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-let g:deoplete#omni_patterns.go = '[^.[:digit:] *\t]\.\w*'
-set rtp+=$GOPATH/src/github.com/nsf/gocode/vim
 set runtimepath^=~/.vim/bundle/ag
-
-"javascript
-let g:used_javascript_libs = 'jquery,react, flux'
+let g:ctrlp_use_caching = 0
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+let g:vim_json_syntax_conceal = 0
+let g:goldenview__enable_default_mapping = 0
+let g:enable_bold_font = 1
+syntax on
+set background=dark
+colorscheme molokai
+hi Normal ctermbg=none
+let g:airline_powerline_fonts=1
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:SuperTabMappingForward="<tab>"
+let g:ctrlp_match_window = 'top,order:btt,min:1,max:30,results:30'
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+" autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd Filetype css setlocal ts=2 sts=2 sw=2
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
+autocmd Filetype javascript set filetype:javascript.jsx
+autocmd FileType jsx set syntax=javascript.jsx
+let g:user_emmet_settings={'javascript.jsx': {'extends':'jsx'}}
+au BufNewFile,BufRead *.html set filetype=eruby
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 1
+filetype plugin on
+set wildmenu
+set path+=**/*
+" let g:go_list_type = "quickfix"
+let NERDTreeIgnore = ['\.pyc$', '__pycache__', 'node_modules', 'env', 'venv', '.git', '.svn']
+let g:airline_theme='powerlineish'
+let g:SuperTabDefaultCompletionType = "<c-n>"
+hi link htmlLink NONE
+set completeopt-=preview
